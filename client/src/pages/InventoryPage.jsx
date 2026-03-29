@@ -193,12 +193,14 @@ function InventoryPage() {
                       label="Supplier Name"
                       value={supplierName}
                       onChange={(event) => setSupplierName(event.target.value)}
+                      sx={{ marginBottom: "16px", marginTop: "8px" }}
                     />
                     <TextField
                       fullWidth
                       label="City"
                       value={supplierCity}
                       onChange={(event) => setSupplierCity(event.target.value)}
+                      sx={{ marginBottom: "16px" }}
                     />
                     <Button
                       type="submit"
@@ -218,7 +220,7 @@ function InventoryPage() {
                   Add Inventory Item
                 </Typography>
                 <form onSubmit={handleCreateInventory}>
-                  <Box className="space-y-4">
+                  <Box className="space-y-4" sx={{ marginTop: "8px" }}>
                     <FormControl fullWidth>
                       <InputLabel id="supplier-select-label">
                         Supplier
@@ -228,6 +230,7 @@ function InventoryPage() {
                         label="Supplier"
                         value={supplierId}
                         onChange={(event) => setSupplierId(event.target.value)}
+                        sx={{ marginBottom: "16px" }}
                       >
                         {suppliers.map((supplier) => (
                           <MenuItem key={supplier.id} value={supplier.id}>
@@ -241,6 +244,7 @@ function InventoryPage() {
                       label="Product Name"
                       value={productName}
                       onChange={(event) => setProductName(event.target.value)}
+                      sx={{ marginBottom: "16px" }}
                     />
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
@@ -251,6 +255,7 @@ function InventoryPage() {
                           inputProps={{ min: 0 }}
                           value={quantity}
                           onChange={(event) => setQuantity(event.target.value)}
+                          sx={{ marginBottom: "16px" }}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
@@ -261,6 +266,7 @@ function InventoryPage() {
                           inputProps={{ min: 0.01, step: 0.01 }}
                           value={price}
                           onChange={(event) => setPrice(event.target.value)}
+                          sx={{ marginBottom: "16px" }}
                         />
                       </Grid>
                     </Grid>

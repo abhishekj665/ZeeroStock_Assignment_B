@@ -183,12 +183,12 @@ function SearchPage() {
                   />
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={6} sx={{width : "100px"}}>
                   <FormControl fullWidth>
-                    <InputLabel id="category-label">Category</InputLabel>
+                    <InputLabel id="category-label">City</InputLabel>
                     <Select
                       labelId="category-label"
-                      label="Category"
+                      label="City"
                       value={category}
                       onChange={(event) => setCategory(event.target.value)}
                     >
@@ -201,29 +201,8 @@ function SearchPage() {
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    fullWidth
-                    label="Min price"
-                    type="number"
-                    inputProps={{ min: 0, step: 0.01 }}
-                    value={minPrice}
-                    onChange={(event) => setMinPrice(event.target.value)}
-                    placeholder="0.00"
-                  />
-                </Grid>
-
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    fullWidth
-                    label="Max price"
-                    type="number"
-                    inputProps={{ min: 0, step: 0.01 }}
-                    value={maxPrice}
-                    onChange={(event) => setMaxPrice(event.target.value)}
-                    placeholder="0.00"
-                  />
-                </Grid>
+                
+                
 
                 <Grid item xs={12} className="flex flex-wrap gap-3 justify-end">
                   <Button

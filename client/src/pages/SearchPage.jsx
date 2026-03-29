@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-    fetchCategories,
+  fetchCategories,
   searchInventory,
 } from "../services/inventory.service.js";
 import {
@@ -94,7 +94,6 @@ function SearchPage() {
     window.location.href = "/inventory";
   };
 
-
   useEffect(() => {
     loadCategories();
     fetchResults();
@@ -183,7 +182,7 @@ function SearchPage() {
                   />
                 </Grid>
 
-                <Grid item xs={12} md={6} sx={{width : "100px"}}>
+                <Grid item xs={12} md={6} sx={{ width: "100px" }}>
                   <FormControl fullWidth>
                     <InputLabel id="category-label">City</InputLabel>
                     <Select
@@ -200,9 +199,6 @@ function SearchPage() {
                     </Select>
                   </FormControl>
                 </Grid>
-
-                
-                
 
                 <Grid item xs={12} className="flex flex-wrap gap-3 justify-end">
                   <Button
@@ -221,11 +217,7 @@ function SearchPage() {
             </form>
           </Paper>
 
-          {error ? (
-            <Alert severity="warning" className="mb-6">
-              {error}
-            </Alert>
-          ) : null}
+          
 
           <Paper
             className="rounded-3xl border border-slate-200 bg-white p-6"

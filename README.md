@@ -1,107 +1,87 @@
-# Inventory Database + APIs
+# Database Design Overview
 
-This assignment implements a database-focused inventory API with supplier relationships and grouped inventory results.
+## Architecture
 
-## Database schema
+The system uses a relational database with two core entities: **Inventory** and **Suppliers**. The schema is designed to ensure data integrity and efficient querying for search and filtering operations.
 
-### Suppliers
+---
 
-- `id` (UUID, primary key)
-- `name` (string, required)
-- `city` (string, required)
+## Entities
 
 ### Inventory
+Stores product-level data. Each record represents a unique inventory item linked to a supplier.
 
-- `id` (UUID, primary key)
-- `supplier_id` (UUID, foreign key)
-- `product_name` (string, required)
-- `quantity` (integer, required, ≥ 0)
-- `price` (decimal, required, > 0)
+**Fields:**
+- `id` (UUID, Primary Key)
+- `supplierId` (Foreign Key → Suppliers.id)
+- `product_name` (String, required)
+- `quantity` (Integer, ≥ 0)
+- `price` (Decimal(10,2), ≥ 0.01)
+- `createdAt`, `updatedAt`, `deletedAt` (timestamps with soft delete)
 
-### Relationship
+---
 
-- One supplier has many inventory items.
-- Inventory rows are linked by `supplier_id`.
+### Suppliers
+Stores supplier-level data and acts as the parent entity.
 
-## Why SQL
+**Fields:**
+- `id` (UUID, Primary Key)
+- `name` (String, required)
+- `city` (String, required)
+- `createdAt`, `updatedAt`, `deletedAt`
 
-I chose SQL because the data model is naturally relational: suppliers and inventory items have a clear one-to-many relationship, and relational constraints help enforce referential integrity. SQL also makes aggregation and sorting operations efficient for queries like "group inventory by supplier and sort by total value."
+---
 
-## API endpoints
+## Relationships
 
-### `POST /supplier`
+- One Supplier → Many Inventory items (One-to-Many)
+- `supplierId` in Inventory references `Suppliers.id`
 
-Create a new supplier.
+---
 
-Request body:
+## Database Choice
 
-```json
-{
-  "name": "Supplier Name",
-  "city": "City Name"
-}
-```
+A **SQL (relational database)** was chosen for the following reasons:
 
-### `POST /inventory`
+- Structured and well-defined schema
+- Strong relational mapping between Inventory and Suppliers
+- Built-in data integrity via constraints and validations
+- Efficient querying with joins and filters (search, price range, etc.)
+- Transaction support for reliable operations
 
-Create a new inventory item for an existing supplier.
+NoSQL was not selected because:
+- It lacks strong relational consistency
+- Joins are inefficient or require manual handling
+- Not ideal for structured transactional systems like inventory management
 
-Request body:
+---
 
-```json
-{
-  "supplierId": "<supplier-uuid>",
-  "product_name": "Product Name",
-  "quantity": 10,
-  "price": 15.5
-}
-```
+## Indexing & Optimization
 
-Rules:
+### Recommended Indexes
 
-- `supplierId` must reference an existing supplier
-- `quantity` must be ≥ 0
-- `price` must be > 0
+- **Composite Index:** `(product_name, price)`
+  - Improves performance for search queries with price filtering
+  - Reduces full table scans
 
-### `GET /inventory`
+- **Index on `supplierId`:**
+  - Optimizes joins between Inventory and Suppliers
 
-Return all inventory grouped by supplier and sorted by total inventory value (`quantity × price`) in descending order.
+---
 
-Response shape:
+## Scalability Considerations
 
-```json
-[
-  {
-    "supplier": {
-      "id": "...",
-      "name": "...",
-      "city": "..."
-    },
-    "inventory": [ ... ],
-    "totalValue": 12345.67
-  }
-]
-```
+- **UUIDs** ensure uniqueness and support distributed systems
+- **Soft deletes (`paranoid`)** prevent permanent data loss
+- **Normalized schema** avoids redundancy and improves consistency
 
-## Running locally
+---
 
-1. Start the backend:
-   ```bash
-   cd server
-   npm install
-   npm start
-   ```
-2. Seed the database with dummy data:
-   ```bash
-   npm run seed
-   ```
-3. Start the frontend:
-   ```bash
-   cd client
-   npm install
-   npm run dev
-   ```
+## Summary
 
-## Optimization suggestion
+The design focuses on:
+- Data integrity through structured schema and constraints  
+- Efficient querying via indexing and relational modeling  
+- Maintainability with clear entity separation  
 
-Add an index on `Inventory.supplier_id` and, if search is added later, on `Inventory.product_name`. This speeds up joining inventory to suppliers and improves query performance for filter and aggregation queries.
+This ensures the system performs well for inventory search and management use cases.
